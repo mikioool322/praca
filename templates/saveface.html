@@ -1,0 +1,10 @@
+        {% extends 'base.html' %}
+        {% block content %}
+        <title>Input face name</title>
+        <h1>Input face name</h1>
+        <img src = "{{ url_for('get_frame') }}" style="width: 50%">
+        <form  method=post>
+        <input type=text name=facename>
+        <input type=submit value=Add>
+        </form>
+        {% endblock %}
