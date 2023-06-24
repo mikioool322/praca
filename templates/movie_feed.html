@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class = "row">
+    <div class = "col-9">
+        <img src="{{ url_for('process_movie', file_path = file_path) }}" width="640" height="480" />
+        <form action="{{ url_for('get_frame') }}">
+            <input type="submit" value="Zapisz klatkę">
+        </form>
+    </div>
+    <div class = "col-3 menu">
+        <form  id="remove_noise" action="" method="post">
+            <div class="my_button">
+                <input type ="submit" name="remove_noise" value="Median filter">
+            </div>
+            <div class="my_button">
+                <input type ="submit" name="remove_noise" value="Gaussian filter">
+            </div>
+            <div class="my_button">
+                <input type ="submit" name="remove_noise" value="Average filter">
+            </div>
+            <div class="my_button">
+                <input type ="submit" name="remove_noise" value="Bilateral filter">
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

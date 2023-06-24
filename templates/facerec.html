@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<title>Face Rec</title>
+<h1>Face rec</h1>
+<form id="model" action="" method="post">
+    <div class="my_button">
+        <input type ="submit" name="model" value="5 points">
+    </div>
+    <div class="my_button">
+        <input type ="submit" name="model" value="68 points">
+    </div>
+</form>
+<form id="model_blur" action="" method="post">
+    <div class="my_button">
+        <input type ="submit" name="model_blur" value="5 points - blur">
+    </div>
+    <div class="my_button">
+        <input type ="submit" name="model_blur" value="68 points - blur">
+    </div>
+</form>
+<form id="model_noise" action="" method="post">
+    <div class="my_button">
+        <input type ="submit" name="model_noise" value="5 points - noise">
+    </div>
+    <div class="my_button">
+        <input type ="submit" name="model_noise" value="68 points - noise">
+    </div>
+</form>
+{% endblock %}

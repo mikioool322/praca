@@ -6,3 +6,157 @@ body {
     text-align: center;
     margin: auto;
 }
+
+.my_button {
+    padding: 5px
+}
+
+.col-1 {width: 8.33%;}
+.col-2 {width: 16.66%;}
+.col-3 {width: 25%;}
+.col-4 {width: 33.33%;}
+.col-5 {width: 41.66%;}
+.col-6 {width: 50%;}
+.col-7 {width: 58.33%;}
+.col-8 {width: 66.66%;}
+.col-9 {width: 75%;}
+.col-10 {width: 83.33%;}
+.col-11 {width: 91.66%;}
+.col-12 {width: 100%;}
+
+* {
+    box-sizing: border-box;
+  }
+  
+  .row::after {
+    content: "";
+    clear: both;
+    display: block;
+  }
+  
+  [class*="col-"] {
+    float: left;
+    padding: 15px;
+  }
+
+.menu {
+  position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    
+    margin: auto;
+}
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.gallery img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  margin: 10px;
+}
+
+.container {
+  display: flex;
+}
+
+.gallery {
+  width: 75%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.gallery img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  margin: 10px;
+}
+
+.form {
+  width: 25%;
+  padding: 10px;
+}
+
+.form input {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.pagination {
+  margin-top: 20px;
+  width: 75%;
+  display: flex;
+  justify-content: center;
+}
+
+.pagination a {
+  padding: 5px 10px;
+  margin: 0 5px;
+  text-decoration: none;
+  color: #000;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.pagination a:hover {
+  background-color: #f5f5f5;
+}
+
+.pagination strong {
+  padding: 5px 10px;
+  margin: 0 5px;
+  color: #fff;
+  background-color: #000;
+  border-radius: 3px;
+}
+
+.gallery .image-caption {
+  text-align: center;
+}
+
+.gallery a {
+  text-decoration: none; /* Usunięcie podkreślenia odnośnika */
+  color: #333; /* Kolor czcionki */
+  transition: color 0.3s; /* Efekt przejścia dla koloru czcionki */
+}
+
+.gallery a:hover {
+  color: #666; /* Kolor czcionki po najechaniu kursorem */
+}
+
+.gallery a:visited {
+  color: #333; /* Kolor czcionki dla odwiedzonych odnośników */
+}
+
+.upload-form {
+  background-color: #f5f5f5;
+  padding: 20px;
+  margin: 0 auto;
+  width: 400px;
+  text-align: center;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+}
+.profile-image {
+  padding: 50px;
+  flex: 0 0 50%;
+  padding-right: 20px;
+}
+.profile-image img {
+  max-width: 100%;
+  height: auto;
+}
+.profile-details {
+  flex: 0 0 50%;
+}

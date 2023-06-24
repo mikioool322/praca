@@ -151,7 +151,7 @@ def batch_face_locations(images, number_of_times_to_upsample=1, batch_size=128):
     return list(map(convert_cnn_detections_to_css, raw_detections_batched))
 
 
-def _raw_face_landmarks(face_image, face_locations=None, model="large"):
+def _raw_face_landmarks(face_image, face_locations=None, model="large"): # default 68 punktów charakterystycznych
     if face_locations is None:
         face_locations = _raw_face_locations(face_image)
     else:
@@ -159,7 +159,7 @@ def _raw_face_landmarks(face_image, face_locations=None, model="large"):
 
     pose_predictor = pose_predictor_68_point
 
-    if model == "small":
+    if model == "small": # 5 punktów charakterystycznych
         pose_predictor = pose_predictor_5_point
 
     return [pose_predictor(face_image, face_location) for face_location in face_locations]
@@ -178,7 +178,7 @@ def face_landmarks(face_image, face_locations=None, model="large"):
     landmarks_as_tuples = [[(p.x, p.y) for p in landmark.parts()] for landmark in landmarks]
 
     # For a definition of each point index, see https://cdn-images-1.medium.com/max/1600/1*AbEg31EgkbXSQehuNJBlWg.png
-    if model == 'large':
+    if model == 'large': # 68 punktów
         return [{
             "chin": points[0:17],
             "left_eyebrow": points[17:22],
@@ -190,7 +190,7 @@ def face_landmarks(face_image, face_locations=None, model="large"):
             "top_lip": points[48:55] + [points[64]] + [points[63]] + [points[62]] + [points[61]] + [points[60]],
             "bottom_lip": points[54:60] + [points[48]] + [points[60]] + [points[67]] + [points[66]] + [points[65]] + [points[64]]
         } for points in landmarks_as_tuples]
-    elif model == 'small':
+    elif model == 'small': # 5 punktów
         return [{
             "nose_tip": [points[4]],
             "left_eye": points[2:4],

@@ -3,13 +3,14 @@ import sys
 import face_recognition
 import cv2
 import numpy as np
+from skimage.util import random_noise
+from skimage.restoration import (denoise_tv_chambolle, denoise_bilateral, denoise_wavelet, estimate_sigma)
 import json
 import threading
 import time
-from imutils.video import WebcamVideoStream
-from imutils.video import FPS
+import os
 import argparse
-import imutils
+
 
 
 # This is a demo of running face recognition on live video from your webcam. It's a little more complicated than the
@@ -23,38 +24,32 @@ import imutils
 
 # Get a reference to webcam #0 (the default one)
 
+global current_frame
+current_frame = None
+    
 
-def facerec():
+def facerec(webcam, database_face_encodings, database_face_names, model, blur = 'no', noise = 'no', remove_noise = 'no'):
     #video_capture = WebcamVideoStream(src=0).start()
     #video_capture = WebcamVideoStream(src=0).start()
-    video_capture = cv2.VideoCapture(0)
+    if not webcam.isOpened():
+        return
+
+    video_capture = webcam
+
+    width = video_capture.get(cv2.CAP_PROP_FRAME_WIDTH)
+    height = video_capture.get(cv2.CAP_PROP_FRAME_HEIGHT)
+    print(width, height)
     
     ##video_capture.set(4, 480)
     video_capture.set(cv2.CAP_PROP_FPS, 24)
     # res 720x480
     
     # fps > 30
-    
-    
-    
-
     # Create arrays of known face encodings and their names
 
-    known_face_encodings = [    
-    ]
-    known_face_names = [    
-    ]
+    known_face_encodings = database_face_encodings
+    known_face_names = database_face_names  
 
-    f = open('known_faces.json', 'r+')
-    load_json = json.load(f)
-    faces = load_json['known_faces']
-    for i in faces:
-        known_face_names.append(i['name'])
-        known_face_encodings.append(i['encoding'])
-        
-        
-   
-    f.close()
                      
 
     # Initialize some variables
@@ -65,10 +60,10 @@ def facerec():
     is_generated = True
     frame_count = 0
     i = 0
-    lock = threading.Lock()
+    num_jitters = 1
     
 
-    while True:
+    while True and video_capture.isOpened() :
         
             print('-----------------------LOOP: ',i,'---------------------------------------')
             
@@ -76,12 +71,47 @@ def facerec():
         
             
             ret, frame = video_capture.read()
+            global current_frame
+            current_frame = frame
             
+           
+            if not ret:
+                break
+
+            if blur == 'yes': # add blur to image
+                frame = cv2.blur(frame,(10,10))
             
+            if noise == 'yes': # add uniform noise to image
+             
+                noisy = random_noise(frame, mode='s&p', amount = 0.1)
+                #noisy = random_noise(frame, mode='gaussian', mean = 0.01, var = 0.05)
+                #noisy = random_noise(frame, mode='speckle', var = 0.05)
+
+                noisy = np.array(255 * noisy, dtype=np.uint8)
+
+                frame = noisy
+
+            if remove_noise == 'median': # redce noise by median filtering
+                median = cv2.medianBlur(frame, 3)
+                frame = median
             
+            if remove_noise =='gauss':
+                gauss = cv2.GaussianBlur(frame,(5,5),0)
+                frame = gauss
+                print("GAUSS")
+
+            if remove_noise =='average':
+                average = cv2.blur(frame,(5,5))
+                frame = average
+                print("AVERAGE")
+            
+            if remove_noise =='bilateral':
+                bilateral = cv2.bilateralFilter(frame,5,150,150)
+                frame = bilateral
+                print("bilateral")
             
         
-                
+
             # Only process every other frame of video to save time
             if process_this_frame:
                 #print(i)
@@ -103,7 +133,7 @@ def facerec():
                 end = time.time()
                 print(end-start_time,'---face locations TIME')
                 start_time = time.time()
-                face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
+                face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations, num_jitters, model)
                 end = time.time()
                 print(end-start_time,'--- face endcodings TIME')
                 face_names = []
@@ -172,6 +202,7 @@ def facerec():
             start_time = time.time()
             yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + 
             bytearray(buffer) + b'\r\n')
+            cv2.waitKey(25)
             end = time.time()
             i+=1
             print(end-start_time,'---yield image TIME')
@@ -182,7 +213,7 @@ def facerec():
 
     # Release handle to the webcam
     print("elo")
-    video_capture.stop()
+    video_capture.release()
     cv2.destroyAllWindows()
 
     

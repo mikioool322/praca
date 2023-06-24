@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+<title>Input face name</title>
+<h1>Input face name</h1>
+<img src = "{{ img_path }}" style="width: 50%">
+<form  method=post action = '/get_framee'>
+        <input type=text name=first_name>
+        <input type=text name=surname>
+        <input type=submit value=Add>
+</form>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+    <script>
+    function pobierzOstatniParametr() {
+      var url = new URL(window.location.href);
+      var path = decodeURIComponent(url.pathname); // Odczytaj ścieżkę URL i zdekoduj znaki specjalne
+      var segments = path.split("/"); // Podziel ścieżkę na segmenty
+      var ostatniParametr = segments[segments.length - 1]; // Pobierz ostatni segment
+
+      document.getElementById("parametrInput").value = ostatniParametr;
+    }
+    document.addEventListener("DOMContentLoaded", pobierzOstatniParametr);
+  </script>
+    <h1>Profil użytkownika</h1>
+    <div class="profile">
+        <div class="profile-image">
+            <img src="../{{ image_path }}" alt="Zdjęcie profilowe">
+        </div>
+        <div class="profile-details">
+            <h2>{{ profile_data.first_name }}</h2>
+            <h2>{{ profile_data.surname }}</h2>
+            
+            {% if session['id'] == 1 %}
+            <form action="/delete_face" method="POST">
+                <input type="text" id="parametrInput" name="parametr" readonly>
+                <br>
+                <input type="submit" value="Wyślij">
+              </form>
+            {% endif %}
+        </div>
+    </div>
+    
+{% endblock %}

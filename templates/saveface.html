@@ -2,9 +2,10 @@
         {% block content %}
         <title>Input face name</title>
         <h1>Input face name</h1>
-        <img src = "{{ url_for('get_frame') }}" style="width: 50%">
-        <form  method=post>
-        <input type=text name=facename>
-        <input type=submit value=Add>
+        <img src = "{{ img_path }}" style="width: 50%">
+        <form  method=post action = '/saveface'>
+                <input type=text name=first_name>
+                <input type=text name=surname>
+                <input type=submit value=Add>
         </form>
         {% endblock %}

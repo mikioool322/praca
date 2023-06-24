@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<title>Face Rec</title>
+<h1>Face Recognition</h1>
+<h3>{{message}}</h3>
+
+<img src = "{{ url_for('video_feed', model = 'large') }}" style = 'width:50%'>
+
+<form action="/get_framee">
+    <input type="submit" value="Add face" />
+</form> 
+
+<script>
+
+</script>
+
+{% endblock %}

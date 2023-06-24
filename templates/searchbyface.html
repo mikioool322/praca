@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+        {% block content %}
+        <title>Upload new File</title>
+        <div align="center" class="border" style="background-color: azure; padding-bottom: 30px;">
+            <h1>Search database by face</h1>
+            <div class="upload-form">
+                <h3>Upload new File</h3>
+                <h1 style="color:red">{{message}}</h1>
+                <br><br>
+                <form method=post enctype=multipart/form-data>
+                    <input type=file name=file>
+                    <br><br>
+                    <input type=submit value=Upload>
+                </form>
+            </div>
+        </div>
+        {% endblock %}
